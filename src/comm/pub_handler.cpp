@@ -386,6 +386,18 @@ void LidarPubHandler::ProcessCartesianHighPoint(RawPacket & pkt) {
     point.line = i % pkt.line_num;
     point.tag = raw[i].tag;
     point.offset_time = pkt.time_stamp + i * pkt.point_interval;
+    float x_min = -0.02; // minimum x-bound
+    float x_max = 0.09; // maximum x-bound
+    float y_min = -0.22; // minimum y-bound
+    float y_max = 0.22; // maximum y-bound
+    float z_min = -0.06; // minimum z-bound
+    float z_max = 0.06; // maximum z-bound
+    if (point.x >= x_min && point.x <= x_max &&
+        point.y >= y_min && point.y <= y_max &&
+        point.z >= z_min && point.z <= z_max) {
+        continue; // Skip points inside the bounding box
+        }
+        
     std::lock_guard<std::mutex> lock(mutex_);
     points_clouds_.push_back(point);
   }
@@ -414,6 +426,18 @@ void LidarPubHandler::ProcessCartesianLowPoint(RawPacket & pkt) {
     point.line = i % pkt.line_num;
     point.tag = raw[i].tag;
     point.offset_time = pkt.time_stamp + i * pkt.point_interval;
+    float x_min = -0.02; // minimum x-bound
+    float x_max = 0.09; // maximum x-bound
+    float y_min = -0.22; // minimum y-bound
+    float y_max = 0.22; // maximum y-bound
+    float z_min = -0.06; // minimum z-bound
+    float z_max = 0.06; // maximum z-bound
+    if (point.x >= x_min && point.x <= x_max &&
+        point.y >= y_min && point.y <= y_max &&
+        point.z >= z_min && point.z <= z_max) {
+        continue; // Skip points inside the bounding box
+        }
+        
     std::lock_guard<std::mutex> lock(mutex_);
     points_clouds_.push_back(point);
   }
