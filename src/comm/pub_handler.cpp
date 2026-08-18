@@ -102,6 +102,15 @@ void PubHandler::OnLivoxLidarPointCloudCallback(uint32_t handle, const uint8_t d
     return;
   }
 
+  {
+    static uint8_t last_time_type = 0xFF;
+    if (data->time_type != last_time_type) {
+      std::cout << "[livox] timestamp_type changed (0=NoSync, 1=gPTP/PTP, 2=GPS): "
+                << static_cast<int>(last_time_type) << " -> "
+                << static_cast<int>(data->time_type) << std::endl;
+      last_time_type = data->time_type;
+    }
+  }
   if (data->time_type != kTimestampTypeNoSync) {
     is_timestamp_sync_.store(true);
   } else {
